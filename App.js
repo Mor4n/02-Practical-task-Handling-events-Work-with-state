@@ -114,6 +114,13 @@ export default function App() {
   }
 };
 
+  const Tag = ({label, selected, onPress}) => (
+    <Pressable style={({pressed})=>[styles.tag, selected && styles.tagSelected, pressed && styles.pressed]} onPress={onPress}>
+      <Text style={[styles.tagText, selected && styles.tagTextSelected]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
 
 
   return (
@@ -166,19 +173,14 @@ export default function App() {
 
           {/* TODO STEP 5: make the skills selectable (Pressable + array state) */}
           <View style={styles.tags}>
-            {SKILLS.map((skill) => {
-
-              const isSelected = selectedSkills.includes(skill);
-              return(
-
-              <Pressable key={skill} style={({pressed})=>[styles.tag,isSelected && styles.tagSelected, pressed && styles.pressed]} onPress={()=>handleSkillPress(skill)}>
-                <Text style={[styles.tagText, isSelected && styles.tagTextSelected]}>
-                  {skill}
-                </Text>
-              </Pressable>
-              
-            )
-            })}
+            {SKILLS.map((skill) => (
+              <Tag 
+                key={skill} 
+                label={skill} 
+                selected={selectedSkills.includes(skill)} 
+                onPress={()=> handleSkillPress(skill)}
+              />
+            ))}
           </View>
           <Text style={styles.hint}>
             Tap a skill to select it · {selectedSkills.length} selected
