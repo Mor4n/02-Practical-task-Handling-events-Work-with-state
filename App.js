@@ -15,6 +15,7 @@ const COLORS = {
   border: '#E5E7EB',
   online: '#22C55E',
   offline: '#9CA3AF',
+  error: '#DC2626'
 };
 
 const BIO =
@@ -44,6 +45,8 @@ export default function App() {
   const [message, setMessage] = useState('');
 
   const isSendDisabled = message.trim().length === 0;
+
+  const isMaxReached = message.length >= MAX_MESSAGE;
 
   // TODO STEP 5: add the state for the bio, the online status and the selected skills
 
@@ -200,6 +203,7 @@ export default function App() {
             isComposerOpen && 
             <View style={styles.composer}>
               <TextInput style={styles.input} value={message} onChangeText={(newText)=>setMessage(newText)} maxLength={MAX_MESSAGE} placeholder='Write your message here' placeholderTextColor={COLORS.muted}/>
+              {isMaxReached && <Text style={styles.errorText}>Maximum length reached</Text>}
               <View style={styles.composerFooter}>
                 <Text style={styles.counter}> { message.length}/{MAX_MESSAGE} characters </Text>
                 <Pressable disabled={isSendDisabled} onPress={handleSendPress} style={({pressed})=>[styles.sendButton,isSendDisabled && styles.sendButtonDisabled, pressed && !isSendDisabled && styles.pressed]}>
@@ -443,5 +447,9 @@ const styles = StyleSheet.create({
   tagTextSelected: {
     color: '#FFFFFF',
   },
-
+  errorText:{
+    marginTop: 6,
+    fontSize: 12,
+    color: COLORS.error,
+  }
 });
