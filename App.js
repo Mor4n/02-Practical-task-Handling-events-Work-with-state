@@ -1,7 +1,9 @@
 // TASK 2 — Interactive Profile Card (starter)
 // Start point: the solution of Task 1 + the new data. Follow the steps in README.md.
 // TODO: add the imports you need in each step (Pressable, Button, Alert, TextInput, useState...)
+import { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, Platform, Pressable, Button, Alert } from 'react-native';
+
 
 const COLORS = {
   background: '#EEF1F6',
@@ -20,6 +22,7 @@ const BIO =
 
 const SKILLS = ['React Native', 'JavaScript', 'UI Design', 'Git', 'Flexbox'];
 const BASE_FOLLOWERS = 1200;
+
 // TODO STEP 4: const MAX_MESSAGE = 140;
 
 // Adds thousands separators: 1200 -> '1,200'
@@ -28,8 +31,14 @@ function formatCount(n) {
 }
 
 export default function App() {
+  
+
+  // TODO STEP 3: add the state for follow / unfollow (useState)
+  const [isFollowing, setIsFollowing] = useState(false); 
   // STEP 3: followers must grow by 1 while you are following
-  const followers = BASE_FOLLOWERS;
+  const followers = BASE_FOLLOWERS + (isFollowing ? 1 : 0);
+
+  
   const stats = [
     { label: 'Projects', value: '24' },
     { label: 'Followers', value: formatCount(followers) },
@@ -38,8 +47,12 @@ export default function App() {
 
   // TODO STEP 1: write the event handlers (handleFollowPress, handleMessagePress, params)
 
+
+
   function handleFollowPress () {
-    Alert.alert('Follow', 'You pressed Follow');
+    
+    setIsFollowing(!isFollowing)
+
   }
 
   function handleMessagePress() {
@@ -50,7 +63,9 @@ export default function App() {
     Alert.alert('Share profile', 'Sharing Alex Rivera\'s profile');
   }
 
-  // TODO STEP 3: add the state for follow / unfollow (useState)
+  
+
+
   // TODO STEP 4: add the state for the message composer
   // TODO STEP 5: add the state for the bio, the online status and the selected skills
 
@@ -110,8 +125,8 @@ export default function App() {
                 STEP 2: give them visual feedback with the style function (pressed).
                 STEP 3: make the Follow button toggle between 'Follow' and 'Following'. */}
           <View style={styles.actions}>
-            <Pressable style={( { pressed } )=> [styles.button,styles.buttonPrimary, pressed && styles.pressed]} onPress={handleFollowPress}>
-              <Text style={[styles.buttonText, styles.buttonTextPrimary]}>Follow</Text>
+            <Pressable style={( { pressed } )=> [styles.button,isFollowing ? styles.buttonFollowing : styles.buttonPrimary, pressed && styles.pressed]} onPress={handleFollowPress}>
+              <Text style={[styles.buttonText, !isFollowing &&styles.buttonTextPrimary]}>{ isFollowing ? 'Following' : 'Follow' }</Text>
             </Pressable>
             <Pressable style={( { pressed } )=> [styles.button, pressed && styles.pressed]} onPress={handleMessagePress}>
               <Text style={styles.buttonText}>Message</Text>
