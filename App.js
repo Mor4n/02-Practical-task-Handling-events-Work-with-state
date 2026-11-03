@@ -53,6 +53,8 @@ export default function App() {
 
   const [selectedSkills, setSelectedSkills] = useState([]);
 
+  const [isBusy, setIsBusy] = useState(false);
+
 
   const stats = [
     { label: 'Projects', value: '24' },
@@ -67,6 +69,10 @@ export default function App() {
   function handleFollowPress () {
     
     setIsFollowing(!isFollowing)
+
+    setIsBusy(true)
+
+    setTimeout(() => setIsBusy(false),2000);
 
   }
 
@@ -179,7 +185,8 @@ export default function App() {
                 STEP 2: give them visual feedback with the style function (pressed).
                 STEP 3: make the Follow button toggle between 'Follow' and 'Following'. */}
           <View style={styles.actions}>
-            <Pressable style={( { pressed } )=> [styles.button,isFollowing ? styles.buttonFollowing : styles.buttonPrimary, pressed && styles.pressed]} onPress={handleFollowPress}>
+            <Pressable style={( { pressed } )=> [styles.button,isFollowing ? styles.buttonFollowing : styles.buttonPrimary, (pressed||isBusy) && styles.pressed]} onPress={handleFollowPress}
+              disabled={isBusy}>
               <Text style={[styles.buttonText, !isFollowing &&styles.buttonTextPrimary]}>{ isFollowing ? 'Following' : 'Follow' }</Text>
             </Pressable>
             <Pressable style={( { pressed } )=> [styles.button, pressed && styles.pressed]} onPress={handleMessagePress}>
