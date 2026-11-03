@@ -45,6 +45,15 @@ export default function App() {
 
   const isSendDisabled = message.trim().length === 0;
 
+  // TODO STEP 5: add the state for the bio, the online status and the selected skills
+
+  const [isBioExpanded, setIsBioExpanded] = useState(false);
+
+  const [isOnline, setIsOnline] = useState(true);
+
+  const [selectedSkills, setSelectedSkills] = useState([]);
+
+
   const stats = [
     { label: 'Projects', value: '24' },
     { label: 'Followers', value: formatCount(followers) },
@@ -80,11 +89,23 @@ export default function App() {
     Alert.alert('Share profile', 'Sharing Alex Rivera\'s profile');
   }
 
-  
+  function handleBioPress() {
+    setIsBioExpanded(!isBioExpanded)
+  }
+
+  const handleAvatarPress = () => {
+    setIsOnline(!isOnline);
+  };
+
+  function handleSkillPress(skill) {
+  if (selectedSkills.includes(skill)) {
+    setSelectedSkills(selectedSkills.filter((item) => item !== skill));
+  } else {
+    setSelectedSkills([...selectedSkills, skill]);
+  }
+};
 
 
-  
-  // TODO STEP 5: add the state for the bio, the online status and the selected skills
 
   return (
     <ScrollView
@@ -101,10 +122,10 @@ export default function App() {
         <View style={styles.body}>
           <View style={styles.headerRow}>
             {/* TODO STEP 5: make the avatar pressable to toggle the online status */}
-            <View>
+            <Pressable onPress={handleAvatarPress}>
               <Image source={require('./assets/avatar.png')} style={styles.avatar} />
-              <View style={styles.onlineBadge} />
-            </View>
+              <View style={[styles.onlineBadge, !isOnline && styles.offlineBadge]} />
+            </Pressable>
             <View style={styles.headerText}>
               <Text style={styles.name}>Alex Rivera</Text>
               <Text style={styles.role}>Mobile Developer</Text>
@@ -113,9 +134,14 @@ export default function App() {
           </View>
 
           {/* TODO STEP 5: add a 'Read more' / 'Show less' link to expand the bio */}
-          <Text style={styles.bio} numberOfLines={3}>
+          <Text style={styles.bio} numberOfLines={isBioExpanded ? undefined : 3}>
             {BIO}
           </Text>
+          <Pressable onPress={handleBioPress}>
+            <Text style={styles.link}>
+              {isBioExpanded ? 'Show less' : 'Read more'}
+            </Text>
+          </Pressable>
 
           <View style={styles.statsRow}>
             {stats.map((item, index) => (
@@ -131,12 +157,23 @@ export default function App() {
 
           {/* TODO STEP 5: make the skills selectable (Pressable + array state) */}
           <View style={styles.tags}>
-            {SKILLS.map((skill) => (
-              <View key={skill} style={styles.tag}>
-                <Text style={styles.tagText}>{skill}</Text>
-              </View>
-            ))}
+            {SKILLS.map((skill) => {
+
+              const isSelected = selectedSkills.includes(skill);
+              return(
+
+              <Pressable key={skill} style={({pressed})=>[styles.tag,isSelected && styles.tagSelected, pressed && styles.pressed]} onPress={()=>handleSkillPress(skill)}>
+                <Text style={[styles.tagText, isSelected && styles.tagTextSelected]}>
+                  {skill}
+                </Text>
+              </Pressable>
+              
+            )
+            })}
           </View>
+          <Text style={styles.hint}>
+            Tap a skill to select it · {selectedSkills.length} selected
+          </Text>
 
           {/* TODO STEP 1-3: turn these two Views into Pressable components with onPress.
                 STEP 2: give them visual feedback with the style function (pressed).
