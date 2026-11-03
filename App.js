@@ -1,7 +1,7 @@
 // TASK 2 — Interactive Profile Card (starter)
 // Start point: the solution of Task 1 + the new data. Follow the steps in README.md.
 // TODO: add the imports you need in each step (Pressable, Button, Alert, TextInput, useState...)
-import { View, Text, Image, ScrollView, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, Platform, Pressable, Button, Alert } from 'react-native';
 
 const COLORS = {
   background: '#EEF1F6',
@@ -36,7 +36,20 @@ export default function App() {
     { label: 'Following', value: '180' },
   ];
 
-  // TODO STEP 1: write the event handlers (handleFollowPress, handleMessagePress, handleSharePress)
+  // TODO STEP 1: write the event handlers (handleFollowPress, handleMessagePress, params)
+
+  function handleFollowPress () {
+    Alert.alert('Follow', 'You pressed Follow');
+  }
+
+  function handleMessagePress() {
+    Alert.alert('Message', 'You pressed Message');
+  }
+
+  function handleSharePress() {
+    Alert.alert('Share profile', 'Sharing Alex Rivera\'s profile');
+  }
+
   // TODO STEP 3: add the state for follow / unfollow (useState)
   // TODO STEP 4: add the state for the message composer
   // TODO STEP 5: add the state for the bio, the online status and the selected skills
@@ -97,17 +110,20 @@ export default function App() {
                 STEP 2: give them visual feedback with the style function (pressed).
                 STEP 3: make the Follow button toggle between 'Follow' and 'Following'. */}
           <View style={styles.actions}>
-            <View style={[styles.button, styles.buttonPrimary]}>
+            <Pressable style={[styles.button, styles.buttonPrimary]} onPress={handleFollowPress}>
               <Text style={[styles.buttonText, styles.buttonTextPrimary]}>Follow</Text>
-            </View>
-            <View style={styles.button}>
+            </Pressable>
+            <Pressable style={styles.button} onPress={handleMessagePress}>
               <Text style={styles.buttonText}>Message</Text>
-            </View>
+            </Pressable>
           </View>
 
           {/* TODO STEP 4: when 'Message' is pressed, show a composer here (TextInput + counter + Send) */}
 
           {/* TODO STEP 1: add a 'Share profile' Button (core component) here */}
+          <View style={styles.shareWrapper}>
+            <Button title="Share profile" color={COLORS.primary} onPress={handleSharePress}></Button>
+          </View>
         </View>
       </View>
     </ScrollView>
